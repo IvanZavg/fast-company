@@ -3,7 +3,7 @@ import api from '../api';
 
 const BanerUsersCount = (props) => {
   const usersCount = Number(props.usersCount);
-  const lastNumber = Number(props.usersCount.toString().split('').reverse()[0]);
+  const lastNumber = Number(props.usersCount.toString().slice(-1));
   let banerText = '';
   let banerBgClassColor = 'bg-primary';
 
@@ -12,7 +12,7 @@ const BanerUsersCount = (props) => {
   } else if (usersCount > 0) {
     banerText = `${usersCount} человек тусанет с тобой сегодня`;
   } else {
-    banerText = `Никто с тобой не тусанет`;
+    banerText = 'Никто с тобой не тусанет';
     banerBgClassColor = 'bg-danger';
   }
 
@@ -27,9 +27,9 @@ const BadgeQalitiesList = (props) => {
   const qualities = props.qualities;
   return (
     <>
-      {qualities.map((qality) => (
-        <span className={`badge bg-${qality.color} m-1`} key={qality._id}>
-          {qality.name}
+      {qualities.map((quality) => (
+        <span className={`badge bg-${quality.color} m-1`} key={quality._id}>
+          {quality.name}
         </span>
       ))}
     </>
@@ -37,9 +37,9 @@ const BadgeQalitiesList = (props) => {
 };
 
 const Users = () => {
-  const [users, changeUsers] = useState(api.users.fetchAll());
-  const deleteUserRow = (id) => {
-    changeUsers((prevState) => prevState.filter((user) => user._id !== id));
+  const [users, setUsers] = useState(api.users.fetchAll());
+  const handleDeleteUserRow = (id) => {
+    setUsers(users.filter((user) => user._id !== id));
   };
 
   return (
@@ -68,7 +68,7 @@ const Users = () => {
 
               <td>{user.rate}</td>
               <td>
-                <button className="btn btn-danger" onClick={() => deleteUserRow(user._id)}>
+                <button className="btn btn-danger" onClick={() => handleDeleteUserRow(user._id)}>
                   Delete
                 </button>
               </td>
