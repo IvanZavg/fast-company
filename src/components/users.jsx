@@ -17,7 +17,7 @@ const BanerUsersCount = (props) => {
   }
 
   return (
-    <div className={`badge ${banerBgClassColor} text-white`}>
+    <div className={`badge ${banerBgClassColor} text-white m-2`}>
       <h5>{banerText}</h5>
     </div>
   );
