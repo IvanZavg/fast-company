@@ -1,14 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Users from './components/users';
+import UsersRespondPage from './components/UsersRespondPage';
 import './index.css';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+import '../node_modules/bootstrap-icons/font/bootstrap-icons.css';
 
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
-    <Users />
+    <UsersRespondPage />
   </React.StrictMode>,
   document.getElementById('root')
 );
