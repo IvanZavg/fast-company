@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import UserRow from './UserRow';
 
 const UsersTable = (props) => {
@@ -28,6 +30,13 @@ const UsersTable = (props) => {
       </tbody>
     </table>
   );
+};
+
+UsersTable.propTypes = {
+  users: PropTypes.array.isRequired,
+  favorites: PropTypes.object.isRequired,
+  handleDeleteUserRow: PropTypes.func.isRequired,
+  handleToggleFavorites: PropTypes.func.isRequired
 };
 
 export default UsersTable;

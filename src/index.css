@@ -11,3 +11,11 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+button.page-link:focus {
+  z-index: 1;
+  color: inherit;
+  background-color: inherit;
+  outline: 0;
+  box-shadow: none;
+}

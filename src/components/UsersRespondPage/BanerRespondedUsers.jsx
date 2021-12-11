@@ -1,12 +1,16 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
-const BanerResponedUsers = (props) => {
-  const usersCount = Number(props.usersCount);
-  const lastNumber = Number(props.usersCount.toString().slice(-1));
+const BanerResponedUsers = ({ usersCount }) => {
+  const lastNumber = Number(usersCount.toString().slice(-1));
   let banerText = '';
   let banerBgClassColor = 'bg-primary';
 
-  if (lastNumber > 1 && lastNumber < 5 && (usersCount < 10 || usersCount > 20)) {
+  if (
+    lastNumber > 1 &&
+    lastNumber < 5 &&
+    (usersCount < 10 || usersCount > 20)
+  ) {
     banerText = `${usersCount} человека тусанут с тобой сегодня`;
   } else if (usersCount > 0) {
     banerText = `${usersCount} человек тусанет с тобой сегодня`;
@@ -20,6 +24,10 @@ const BanerResponedUsers = (props) => {
       <h5>{banerText}</h5>
     </div>
   );
+};
+
+BanerResponedUsers.propTypes = {
+  usersCount: PropTypes.number.isRequired
 };
 
 export default BanerResponedUsers;

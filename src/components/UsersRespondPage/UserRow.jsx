@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import QalityList from './QalityList';
 import FavoritesBookmark from './FavoritesBookmark';
 
@@ -26,6 +28,17 @@ const UserRow = (props) => {
       </td>
     </tr>
   );
+};
+
+UserRow.propTypes = {
+  name: PropTypes.string.isRequired,
+  qualities: PropTypes.array.isRequired,
+  profession: PropTypes.object.isRequired,
+  completedMeetings: PropTypes.number.isRequired,
+  rate: PropTypes.number.isRequired,
+  isFavorite: PropTypes.bool.isRequired,
+  onDelete: PropTypes.func.isRequired,
+  onToggleFavorites: PropTypes.func.isRequired
 };
 
 export default UserRow;

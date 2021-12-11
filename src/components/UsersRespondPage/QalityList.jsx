@@ -1,7 +1,7 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
-const QalityList = (props) => {
-  const qualities = props.qualities;
+const QalityList = ({ qualities }) => {
   return (
     <>
       {qualities.map((quality) => (
@@ -11,6 +11,10 @@ const QalityList = (props) => {
       ))}
     </>
   );
+};
+
+QalityList.propTypes = {
+  qualities: PropTypes.array.isRequired
 };
 
 export default QalityList;

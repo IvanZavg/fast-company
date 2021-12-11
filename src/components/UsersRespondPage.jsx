@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
 import api from '../api';
 
-import BanerResponedUsers from './UsersRespondPage/BanerRespondedUsers';
-import UsersTable from './UsersRespondPage/UsersTable';
+import BanerResponedUsers from './usersRespondPage/BanerRespondedUsers';
+import UsersTable from './usersRespondPage/UsersTable';
+import Pagination from './Pagination';
+import { paginate } from '../utils/paginate';
 
 const UsersRespondPage = () => {
+  const pageSize = 4;
+  const [currentPage, setCurrentPage] = useState(1);
   const [users, setUsers] = useState(api.users.fetchAll());
   const [favorites, setFavorites] = useState(
     users.reduce((total, user) => {
@@ -12,6 +16,11 @@ const UsersRespondPage = () => {
       return total;
     }, {})
   );
+  const userCrop = paginate(users, currentPage, pageSize);
+
+  const handleOnPageChange = (pageIdx) => {
+    setCurrentPage(pageIdx);
+  };
 
   const handleDeleteUserRow = (id) => {
     setUsers(users.filter((user) => user._id !== id));
@@ -29,8 +38,14 @@ const UsersRespondPage = () => {
       <UsersTable
         handleDeleteUserRow={handleDeleteUserRow}
         handleToggleFavorites={handleToggleFavorites}
-        users={users}
+        users={userCrop}
         favorites={favorites}
+      />
+      <Pagination
+        itemsCount={users.length}
+        pageSize={pageSize}
+        currentPage={currentPage}
+        onPageChange={handleOnPageChange}
       />
     </div>
   );
