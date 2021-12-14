@@ -4,10 +4,11 @@ import api from './api';
 import UsersRespondPage from './components/UsersRespondPage';
 
 const App = () => {
-  const [users, setUsers] = useState(api.users.fetchAll());
-  const [professions, setProfessions] = useState(api.professions.fetchAll());
+  const [users, setUsers] = useState();
+  const [professions, setProfessions] = useState();
   useEffect(() => {
     api.professions.fetchAll().then((data) => setProfessions(data));
+    api.users.fetchAll().then((data) => setUsers(data));
   }, []);
   const handleDeleteUserRow = (id) => {
     setUsers(users.filter((user) => user._id !== id));
@@ -15,11 +16,13 @@ const App = () => {
 
   return (
     <>
-      <UsersRespondPage
-        allUsers={users}
-        allProfessions={professions}
-        onDeleteUser={handleDeleteUserRow}
-      />
+      {Boolean(users) && (
+        <UsersRespondPage
+          allUsers={users}
+          allProfessions={professions}
+          onDeleteUser={handleDeleteUserRow}
+        />
+      )}
     </>
   );
 };

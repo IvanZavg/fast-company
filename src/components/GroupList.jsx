@@ -8,18 +8,39 @@ function setItemClass(selectedItem, currentItem, valueProperty) {
   if (selectedItem[valueProperty] === currentItem[valueProperty]) {
     className += ' active';
   }
-
   return className;
 }
 
-const GroupList = ({
+function renderFromArray({
   items,
   valueProperty,
   contentProperty,
   onItemSelect,
   selectedItem
-}) => {
-  const itemsKey = Object.keys(items);
+}) {
+  return (
+    <ul className="list-group">
+      {items.map((item) => (
+        <li
+          className={setItemClass(selectedItem, item, valueProperty)}
+          key={item[valueProperty]}
+          onClick={() => onItemSelect(item)}
+        >
+          {item[contentProperty]}
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+function renderFromObject({
+  itemsKey,
+  items,
+  valueProperty,
+  contentProperty,
+  onItemSelect,
+  selectedItem
+}) {
   return (
     <ul className="list-group">
       {itemsKey.map((key) => (
@@ -33,6 +54,15 @@ const GroupList = ({
       ))}
     </ul>
   );
+}
+
+const GroupList = (props) => {
+  if (Array.isArray(props.items)) {
+    return renderFromArray(props);
+  } else if (typeof props.items === 'object') {
+    const itemsKey = Object.keys(props.items);
+    return renderFromObject({ itemsKey, ...props });
+  }
 };
 
 GroupList.defaultProps = {
@@ -41,7 +71,7 @@ GroupList.defaultProps = {
 };
 
 GroupList.propTypes = {
-  items: PropTypes.object.isRequired,
+  items: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
   valueProperty: PropTypes.string.isRequired,
   contentProperty: PropTypes.string.isRequired,
   onItemSelect: PropTypes.func.isRequired,

@@ -26,12 +26,12 @@ const UsersRespondPage = ({ allUsers, allProfessions, onDeleteUser }) => {
   const [selectedProf, setSelectedProf] = useState();
   const [favorites, setFavorites] = useState(createFavoritesDict(allUsers));
   const filteredUsers = selectedProf
-    ? allUsers.filter((user) => user.profession === selectedProf)
+    ? allUsers.filter((user) => user.profession._id === selectedProf._id)
     : allUsers;
 
   useEffect(() => setCurrentPage(1), [selectedProf]);
 
-  const pageSize = 1;
+  const pageSize = 4;
   const itemsCount = filteredUsers.length;
   checkCurrentPage(filteredUsers, pageSize, currentPage, setCurrentPage);
   const userCrop = paginate(filteredUsers, currentPage, pageSize);
@@ -98,7 +98,7 @@ const UsersRespondPage = ({ allUsers, allProfessions, onDeleteUser }) => {
 
 UsersRespondPage.propTypes = {
   allUsers: PropTypes.array,
-  allProfessions: PropTypes.object,
+  allProfessions: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
   onDeleteUser: PropTypes.func
 };
 
