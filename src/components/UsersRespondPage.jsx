@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import api from '../api';
+import PropTypes from 'prop-types';
 
 import BanerResponedUsers from './usersRespondPage/BanerRespondedUsers';
 import UsersTable from './usersRespondPage/UsersTable';
@@ -8,54 +8,44 @@ import GroupList from './GroupList';
 
 import { paginate } from '../utils/paginate';
 import { createFavoritesDict } from '../utils/createFavoritesDict';
-import { filterItems } from '../utils/filterItems';
 
-const UsersRespondPage = () => {
+function checkCurrentPage(
+  filteredUsers,
+  pageSize,
+  currentPage,
+  setCurrentPage
+) {
+  const countPages = Math.ceil(filteredUsers.length / pageSize);
+  if (currentPage > countPages) {
+    setCurrentPage(countPages);
+  }
+}
+
+const UsersRespondPage = ({ allUsers, allProfessions, onDeleteUser }) => {
   const [currentPage, setCurrentPage] = useState(1);
-  const [users, setUsers] = useState(api.users.fetchAll());
-  const [professions, setProfessions] = useState(api.professions.fetchAll());
   const [selectedProf, setSelectedProf] = useState();
-  const [favorites, setFavorites] = useState(createFavoritesDict(users));
-  const [filteredUsers, setFilteredUsers] = useState(
-    filterItems({
-      arr: users,
-      value: selectedProf,
-      propValue: 'profession',
-      ifEmptyReturnPrev: true
-    })
-  );
+  const [favorites, setFavorites] = useState(createFavoritesDict(allUsers));
+  const filteredUsers = selectedProf
+    ? allUsers.filter((user) => user.profession === selectedProf)
+    : allUsers;
 
-  const pageSize = 4;
+  useEffect(() => setCurrentPage(1), [selectedProf]);
+
+  const pageSize = 1;
+  const itemsCount = filteredUsers.length;
+  checkCurrentPage(filteredUsers, pageSize, currentPage, setCurrentPage);
   const userCrop = paginate(filteredUsers, currentPage, pageSize);
 
-  useEffect(() => {
-    api.professions.fetchAll().then((data) => setProfessions(data));
-  }, []);
-
-  useEffect(() => console.log(professions), [professions]);
-
   const handleProfessionSelect = (selectedProf) => {
-    const filteredUsers = filterItems({
-      arr: users,
-      value: selectedProf,
-      propValue: 'profession',
-      ifEmptyReturnPrev: false
-    });
     setSelectedProf(selectedProf);
-    setFilteredUsers(filteredUsers);
   };
 
   const handleClearFilter = () => {
     setSelectedProf();
-    setFilteredUsers(users);
   };
 
   const handleOnPageChange = (pageIdx) => {
     setCurrentPage(pageIdx);
-  };
-
-  const handleDeleteUserRow = (id) => {
-    setUsers(users.filter((user) => user._id !== id));
   };
 
   const handleToggleFavorites = (id) => {
@@ -65,12 +55,11 @@ const UsersRespondPage = () => {
   };
 
   return (
-    <div className="container">
-      <BanerResponedUsers usersCount={filteredUsers.length} />
-      {professions && (
-        <>
+    <div className="d-flex">
+      {allProfessions && (
+        <div className="d-flex flex-column flex-shrink-0 p-3">
           <GroupList
-            items={professions}
+            items={allProfessions}
             onItemSelect={handleProfessionSelect}
             selectedItem={selectedProf}
           />
@@ -80,22 +69,37 @@ const UsersRespondPage = () => {
           >
             Очистить
           </button>
-        </>
+        </div>
       )}
-      <UsersTable
-        handleDeleteUserRow={handleDeleteUserRow}
-        handleToggleFavorites={handleToggleFavorites}
-        users={userCrop}
-        favorites={favorites}
-      />
-      <Pagination
-        itemsCount={filteredUsers.length}
-        pageSize={pageSize}
-        currentPage={currentPage}
-        onPageChange={handleOnPageChange}
-      />
+      <div className="d-flex flex-column">
+        <BanerResponedUsers usersCount={filteredUsers.length} />
+        {Boolean(userCrop.length) && (
+          <UsersTable
+            onDeleteUser={onDeleteUser}
+            handleToggleFavorites={handleToggleFavorites}
+            users={userCrop}
+            favorites={favorites}
+          />
+        )}
+        {Boolean(itemsCount) && (
+          <div className="d-flex justify-content-center">
+            <Pagination
+              itemsCount={itemsCount}
+              pageSize={pageSize}
+              currentPage={currentPage}
+              onPageChange={handleOnPageChange}
+            />
+          </div>
+        )}
+      </div>
     </div>
   );
+};
+
+UsersRespondPage.propTypes = {
+  allUsers: PropTypes.array,
+  allProfessions: PropTypes.object,
+  onDeleteUser: PropTypes.func
 };
 
 export default UsersRespondPage;

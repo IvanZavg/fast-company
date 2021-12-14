@@ -6,15 +6,11 @@ import SimplePagination from './paginationComponents/SimplePagination';
 import LargePagination from './paginationComponents/LargePagination';
 
 const Pagination = ({ itemsCount, pageSize, currentPage, onPageChange }) => {
-  const pageCount = Math.ceil(itemsCount / pageSize);
-  const pages = _.range(1, pageCount + 1);
-  if (currentPage > pageCount) {
-    onPageChange(pageCount);
-  }
-
-  if (pageCount === 1) {
-    return null;
-  } else if (pageCount <= 5) {
+  const countPages = Math.ceil(itemsCount / pageSize);
+  const pages = _.range(1, countPages + 1);
+  if (countPages <= 1) {
+    return <></>;
+  } else if (countPages <= 5) {
     return (
       <SimplePagination
         pages={pages}
@@ -25,7 +21,7 @@ const Pagination = ({ itemsCount, pageSize, currentPage, onPageChange }) => {
   } else {
     return (
       <LargePagination
-        pageCount={pageCount}
+        countPages={countPages}
         currentPage={currentPage}
         onPageChange={onPageChange}
       />

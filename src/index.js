@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import UsersRespondPage from './components/UsersRespondPage';
+import App from './App';
+
 import './index.css';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import '../node_modules/bootstrap-icons/font/bootstrap-icons.css';
@@ -9,7 +10,7 @@ import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
-    <UsersRespondPage />
+    <App />
   </React.StrictMode>,
   document.getElementById('root')
 );

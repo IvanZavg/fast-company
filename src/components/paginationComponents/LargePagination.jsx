@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-function definePageNumber(btnIdx, currentPage, pageCount) {
+function definePageNumber(btnIdx, currentPage, countPages) {
   if (btnIdx === 1) {
     const prevTenth = Math.floor(currentPage / 10 - 1) * 10 || 10;
     const showPrevTenth = currentPage - 2 >= 10;
@@ -10,9 +10,9 @@ function definePageNumber(btnIdx, currentPage, pageCount) {
       return 1;
     } else if (showPrevTenth) {
       return prevTenth;
-    } else if (currentPage === pageCount - 1) {
+    } else if (currentPage === countPages - 1) {
       return currentPage - 3;
-    } else if (currentPage === pageCount) {
+    } else if (currentPage === countPages) {
       return currentPage - 4;
     } else {
       return currentPage - 2;
@@ -22,8 +22,8 @@ function definePageNumber(btnIdx, currentPage, pageCount) {
   if (btnIdx === 2) {
     if (currentPage <= 2) {
       return 2;
-    } else if (currentPage >= pageCount - 1) {
-      return pageCount - 3;
+    } else if (currentPage >= countPages - 1) {
+      return countPages - 3;
     } else {
       return currentPage - 1;
     }
@@ -32,8 +32,8 @@ function definePageNumber(btnIdx, currentPage, pageCount) {
   if (btnIdx === 3) {
     if (currentPage <= 3) {
       return 3;
-    } else if (currentPage >= pageCount - 1) {
-      return pageCount - 2;
+    } else if (currentPage >= countPages - 1) {
+      return countPages - 2;
     } else {
       return currentPage;
     }
@@ -42,9 +42,9 @@ function definePageNumber(btnIdx, currentPage, pageCount) {
   if (btnIdx === 4) {
     if (currentPage < 4) {
       return 4;
-    } else if (currentPage >= 4 && currentPage + 2 <= pageCount) {
+    } else if (currentPage >= 4 && currentPage + 2 <= countPages) {
       return currentPage + 1;
-    } else if (currentPage === pageCount) {
+    } else if (currentPage === countPages) {
       return currentPage - 1;
     } else {
       return currentPage;
@@ -53,15 +53,15 @@ function definePageNumber(btnIdx, currentPage, pageCount) {
 
   if (btnIdx === 5) {
     const nextTenth = Math.floor(currentPage / 10 + 1) * 10;
-    const showNextTenth = nextTenth + 2 <= pageCount;
+    const showNextTenth = nextTenth + 2 <= countPages;
     if (showNextTenth) {
       return nextTenth;
     } else if (currentPage < 3) {
       return 5;
-    } else if (currentPage + 2 < pageCount) {
+    } else if (currentPage + 2 < countPages) {
       return currentPage + 2;
     } else {
-      return pageCount;
+      return countPages;
     }
   }
 }
@@ -83,8 +83,8 @@ function choosePrevPage(currentPage, onPageChange) {
   };
 }
 
-function chooseNextPage(currentPage, pageCount, onPageChange) {
-  if (currentPage + 1 > pageCount) return;
+function chooseNextPage(currentPage, countPages, onPageChange) {
+  if (currentPage + 1 > countPages) return;
   return () => {
     onPageChange(currentPage + 1);
   };
@@ -97,19 +97,19 @@ function chooseFirstPage(currentPage, onPageChange) {
   };
 }
 
-function chooseLastPage(currentPage, pageCount, onPageChange) {
-  if (currentPage === pageCount) return;
+function chooseLastPage(currentPage, countPages, onPageChange) {
+  if (currentPage === countPages) return;
   return () => {
-    onPageChange(pageCount);
+    onPageChange(countPages);
   };
 }
 
-const LargePagination = ({ pageCount, currentPage, onPageChange }) => {
-  const pageNumber1 = definePageNumber(1, currentPage, pageCount);
-  const pageNumber2 = definePageNumber(2, currentPage, pageCount);
-  const pageNumber3 = definePageNumber(3, currentPage, pageCount);
-  const pageNumber4 = definePageNumber(4, currentPage, pageCount);
-  const pageNumber5 = definePageNumber(5, currentPage, pageCount);
+const LargePagination = ({ countPages, currentPage, onPageChange }) => {
+  const pageNumber1 = definePageNumber(1, currentPage, countPages);
+  const pageNumber2 = definePageNumber(2, currentPage, countPages);
+  const pageNumber3 = definePageNumber(3, currentPage, countPages);
+  const pageNumber4 = definePageNumber(4, currentPage, countPages);
+  const pageNumber5 = definePageNumber(5, currentPage, countPages);
 
   return (
     <nav aria-label="Page navigation example">
@@ -173,7 +173,7 @@ const LargePagination = ({ pageCount, currentPage, onPageChange }) => {
         <li className="page-item">
           <button
             className="page-link"
-            onClick={chooseNextPage(currentPage, pageCount, onPageChange)}
+            onClick={chooseNextPage(currentPage, countPages, onPageChange)}
           >
             Next
           </button>
@@ -181,7 +181,7 @@ const LargePagination = ({ pageCount, currentPage, onPageChange }) => {
         <li className="page-item">
           <button
             className="page-link"
-            onClick={chooseLastPage(currentPage, pageCount, onPageChange)}
+            onClick={chooseLastPage(currentPage, countPages, onPageChange)}
           >
             Last page
           </button>
@@ -192,7 +192,7 @@ const LargePagination = ({ pageCount, currentPage, onPageChange }) => {
 };
 
 LargePagination.propTypes = {
-  pageCount: PropTypes.number.isRequired,
+  countPages: PropTypes.number.isRequired,
   currentPage: PropTypes.number.isRequired,
   onPageChange: PropTypes.func.isRequired
 };

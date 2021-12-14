@@ -23,7 +23,7 @@ const UsersTable = (props) => {
             key={user._id}
             {...user}
             isFavorite={props.favorites[user._id].isFavorite}
-            onDelete={() => props.handleDeleteUserRow(user._id)}
+            onDelete={() => props.onDeleteUser(user._id)}
             onToggleFavorites={() => props.handleToggleFavorites(user._id)}
           />
         ))}
@@ -35,7 +35,7 @@ const UsersTable = (props) => {
 UsersTable.propTypes = {
   users: PropTypes.array.isRequired,
   favorites: PropTypes.object.isRequired,
-  handleDeleteUserRow: PropTypes.func.isRequired,
+  onDeleteUser: PropTypes.func.isRequired,
   handleToggleFavorites: PropTypes.func.isRequired
 };
 
