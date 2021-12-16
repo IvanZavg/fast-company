@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import _ from 'lodash';
 
-import BanerResponedUsers from './usersRespondPage/BanerRespondedUsers';
-import UsersTable from './usersRespondPage/UsersTable';
+import BanerResponedUsers from './BanerRespondedUsers';
+import UsersTable from './userTableComponents/UsersTable';
 import Pagination from './Pagination';
 import GroupList from './GroupList';
 
 import { paginate } from '../utils/paginate';
-import { createFavoritesDict } from '../utils/createFavoritesDict';
 
 function checkCurrentPage(
   filteredUsers,
@@ -21,37 +21,38 @@ function checkCurrentPage(
   }
 }
 
-const UsersRespondPage = ({ allUsers, allProfessions, onDeleteUser }) => {
+const UsersRespondPage = ({
+  allUsers,
+  allProfessions,
+  onDeleteUser,
+  onToggleFavorites
+}) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedProf, setSelectedProf] = useState();
-  const [favorites, setFavorites] = useState(createFavoritesDict(allUsers));
+  const [sortBy, setSortBy] = useState({ path: 'name', order: 'asc' });
+  useEffect(() => setCurrentPage(1), [selectedProf]);
+
   const filteredUsers = selectedProf
     ? allUsers.filter((user) => user.profession._id === selectedProf._id)
     : allUsers;
-
-  useEffect(() => setCurrentPage(1), [selectedProf]);
-
   const pageSize = 4;
   const itemsCount = filteredUsers.length;
+  const sortedUsers = _.orderBy(filteredUsers, sortBy.path, sortBy.order);
+
   checkCurrentPage(filteredUsers, pageSize, currentPage, setCurrentPage);
-  const userCrop = paginate(filteredUsers, currentPage, pageSize);
+  const userCrop = paginate(sortedUsers, currentPage, pageSize);
 
   const handleProfessionSelect = (selectedProf) => {
     setSelectedProf(selectedProf);
   };
-
   const handleClearFilter = () => {
     setSelectedProf();
   };
-
-  const handleOnPageChange = (pageIdx) => {
+  const handlePageChange = (pageIdx) => {
     setCurrentPage(pageIdx);
   };
-
-  const handleToggleFavorites = (id) => {
-    const newFavoriteState = { isFavorite: !favorites[id].isFavorite };
-    const newState = { ...favorites, [id]: newFavoriteState };
-    setFavorites(newState);
+  const handleSort = (newSortBy) => {
+    setSortBy(newSortBy);
   };
 
   return (
@@ -76,9 +77,10 @@ const UsersRespondPage = ({ allUsers, allProfessions, onDeleteUser }) => {
         {Boolean(userCrop.length) && (
           <UsersTable
             onDeleteUser={onDeleteUser}
-            handleToggleFavorites={handleToggleFavorites}
+            onToggleFavorites={onToggleFavorites}
+            onSort={handleSort}
             users={userCrop}
-            favorites={favorites}
+            selectedSort={sortBy}
           />
         )}
         {Boolean(itemsCount) && (
@@ -87,7 +89,7 @@ const UsersRespondPage = ({ allUsers, allProfessions, onDeleteUser }) => {
               itemsCount={itemsCount}
               pageSize={pageSize}
               currentPage={currentPage}
-              onPageChange={handleOnPageChange}
+              onPageChange={handlePageChange}
             />
           </div>
         )}
@@ -99,7 +101,8 @@ const UsersRespondPage = ({ allUsers, allProfessions, onDeleteUser }) => {
 UsersRespondPage.propTypes = {
   allUsers: PropTypes.array,
   allProfessions: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
-  onDeleteUser: PropTypes.func
+  onDeleteUser: PropTypes.func,
+  onToggleFavorites: PropTypes.func
 };
 
 export default UsersRespondPage;

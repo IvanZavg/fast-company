@@ -25,6 +25,7 @@ function renderFromArray({
           className={setItemClass(selectedItem, item, valueProperty)}
           key={item[valueProperty]}
           onClick={() => onItemSelect(item)}
+          role="button"
         >
           {item[contentProperty]}
         </li>
@@ -48,6 +49,7 @@ function renderFromObject({
           className={setItemClass(selectedItem, items[key], valueProperty)}
           key={items[key][valueProperty]}
           onClick={() => onItemSelect(items[key])}
+          role="button"
         >
           {items[key][contentProperty]}
         </li>
