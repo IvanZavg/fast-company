@@ -1,20 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import TableHeader from './TableHeader';
-import TableBody from './TableBody';
-// import UserRow from './UserRow';
-// <tbody>
-// {props.users.map((user) => (
-// <UserRow
-// key={user._id}
-// {...user}
-// isFavorite={user.bookmark}
-// onDelete={() => props.onDeleteUser(user._id)}
-// onToggleFavorites={() => props.onToggleFavorites(user._id)}
-// />
-// ))}
-// </tbody>
+import Table from '../tableComponent/Table';
+import FavoritesBookmark from './FavoritesBookmark';
+import QalityList from './QalityList';
 
 const UsersTable = (props) => {
   const { onSort, selectedSort } = props;
@@ -25,7 +14,10 @@ const UsersTable = (props) => {
     },
     qualities: {
       path: null,
-      name: 'Качества'
+      name: 'Качества',
+      component: (user) => {
+        return <QalityList qualities={user.qualities} />;
+      }
     },
     profession: {
       path: 'profession.name',
@@ -41,19 +33,32 @@ const UsersTable = (props) => {
     },
     bookmark: {
       path: 'bookmark',
-      name: 'Избранное'
+      name: 'Избранное',
+      component: (user) => {
+        return (
+          <FavoritesBookmark
+            isFavorite={user.bookmark}
+            onToggleFavorites={() => props.onToggleFavorites(user._id)}
+          />
+        );
+      }
     },
     delete: {
       path: null,
-      name: null
+      name: null,
+      component: (user) => {
+        return (
+          <button
+            className="btn btn-danger"
+            onClick={() => props.onDeleteUser(user._id)}
+          >
+            Delete
+          </button>
+        );
+      }
     }
   };
-  return (
-    <table className="table table-hover">
-      <TableHeader {...{ onSort, selectedSort, columns }} />
-      <TableBody {...{ data: props.users, columns }} />
-    </table>
-  );
+  return <Table {...{ onSort, selectedSort, columns, data: props.users }} />;
 };
 
 UsersTable.propTypes = {
