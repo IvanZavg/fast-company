@@ -3,7 +3,7 @@ import _ from 'lodash';
 import api from '../api';
 
 import BanerResponedUsers from './BanerRespondedUsers';
-import UsersTable from './userTableComponents/UsersTable';
+import UsersTable from './userComponents/UsersTable';
 import Pagination from './Pagination';
 import GroupList from './GroupList';
 
@@ -21,7 +21,7 @@ function checkCurrentPage(
   }
 }
 
-const UsersRespondPage = () => {
+const AllUsers = () => {
   const [users, setUsers] = useState();
   const [professions, setProfessions] = useState();
   const [currentPage, setCurrentPage] = useState(1);
@@ -112,4 +112,4 @@ const UsersRespondPage = () => {
   }
 };
 
-export default UsersRespondPage;
+export default AllUsers;

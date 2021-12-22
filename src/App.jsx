@@ -1,11 +1,20 @@
 import React from 'react';
+import { Route, Switch } from 'react-router-dom/cjs/react-router-dom.min';
 
-import UsersRespondPage from './components/UsersRespondPage';
+import MainNavBar from './components/MainNavBar';
+import Main from './layouts/Main';
+import Login from './layouts/Login';
+import Users from './layouts/Users';
 
 const App = () => {
   return (
     <>
-      <UsersRespondPage />
+      <MainNavBar />
+      <Switch>
+        <Route exact path="/" component={Main} />
+        <Route path="/login" component={Login} />
+        <Route path="/users/:userId?" component={Users} />
+      </Switch>
     </>
   );
 };
