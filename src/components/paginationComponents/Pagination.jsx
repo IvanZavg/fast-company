@@ -2,8 +2,8 @@ import React from 'react';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 
-import SimplePagination from './paginationComponents/SimplePagination';
-import LargePagination from './paginationComponents/LargePagination';
+import SimplePagination from './SimplePagination';
+import LargePagination from './LargePagination';
 
 const Pagination = ({ itemsCount, pageSize, currentPage, onPageChange }) => {
   const countPages = Math.ceil(itemsCount / pageSize);

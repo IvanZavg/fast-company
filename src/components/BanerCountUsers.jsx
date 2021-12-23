@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const BanerResponedUsers = ({ usersCount }) => {
+const BanerCountUsers = ({ usersCount }) => {
   const lastNumber = Number(usersCount.toString().slice(-1));
   let banerText = '';
   let banerBgClassColor = 'bg-primary';
@@ -26,8 +26,8 @@ const BanerResponedUsers = ({ usersCount }) => {
   );
 };
 
-BanerResponedUsers.propTypes = {
+BanerCountUsers.propTypes = {
   usersCount: PropTypes.number.isRequired
 };
 
-export default BanerResponedUsers;
+export default BanerCountUsers;

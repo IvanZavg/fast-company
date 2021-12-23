@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import _ from 'lodash';
 import api from '../api';
 
-import BanerResponedUsers from './BanerRespondedUsers';
-import UsersTable from './userComponents/UsersTable';
-import Pagination from './Pagination';
+import BanerCountUsers from './BanerCountUsers';
+import UsersTable from './UsersTable';
+import Pagination from './paginationComponents/Pagination';
 import GroupList from './GroupList';
 
 import { paginate } from '../utils/paginate';
@@ -21,7 +21,7 @@ function checkCurrentPage(
   }
 }
 
-const AllUsers = () => {
+const UsersListPage = () => {
   const [users, setUsers] = useState();
   const [professions, setProfessions] = useState();
   const [currentPage, setCurrentPage] = useState(1);
@@ -84,7 +84,7 @@ const AllUsers = () => {
           </div>
         )}
         <div className="d-flex flex-column">
-          <BanerResponedUsers usersCount={filteredUsers.length} />
+          <BanerCountUsers usersCount={filteredUsers.length} />
           {Boolean(userCrop.length) && (
             <UsersTable
               onDeleteUser={handleDeleteUser}
@@ -112,4 +112,4 @@ const AllUsers = () => {
   }
 };
 
-export default AllUsers;
+export default UsersListPage;
