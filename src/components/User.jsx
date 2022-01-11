@@ -5,7 +5,7 @@ import api from '../api';
 
 import QalityList from './QalityList';
 
-const UserPage = ({ id }) => {
+const User = ({ id }) => {
   const [user, setUser] = useState();
   const history = useHistory();
 
@@ -44,7 +44,7 @@ const UserPage = ({ id }) => {
   return renderUser();
 };
 
-UserPage.propTypes = {
+User.propTypes = {
   id: PropTypes.string.isRequired
 };
-export default UserPage;
+export default User;
