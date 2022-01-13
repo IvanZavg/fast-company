@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-import Table from './tableComponents/Table';
-import FavoritesBookmark from './FavoritesBookmark';
+import Table from '../common/table';
+import FavoritesBookmark from '../common/FavoritesBookmark';
 import QalityList from './QalityList';
 
 const UsersTable = (props) => {

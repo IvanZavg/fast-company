@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import _ from 'lodash';
-import api from '../api';
+import api from '../../../api';
 
-import BanerCountUsers from './BanerCountUsers';
-import UsersTable from './UsersTable';
-import Pagination from './paginationComponents/Pagination';
-import GroupList from './GroupList';
-import TextField from './TextField';
+import BanerCountUsers from '../../ui/BanerCountUsers';
+import UsersTable from '../../ui/UsersTable';
+import Pagination from '../../common/pagination';
+import GroupList from '../../common/GroupList';
+import { TextField } from '../../common/form';
 
-import { paginate } from '../utils/paginate';
+import { paginate } from '../../../utils/paginate';
 
 function checkCurrentPage(
   filteredUsers,
@@ -22,7 +22,7 @@ function checkCurrentPage(
   }
 }
 
-const UsersAll = () => {
+const UsersListPage = () => {
   const [users, setUsers] = useState();
   const [professions, setProfessions] = useState();
   const [currentPage, setCurrentPage] = useState(1);
@@ -138,4 +138,4 @@ const UsersAll = () => {
   }
 };
 
-export default UsersAll;
+export default UsersListPage;

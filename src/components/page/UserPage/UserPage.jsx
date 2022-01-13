@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
-import api from '../api';
+import api from '../../../api';
 
-import QalityList from './QalityList';
+import QalityList from '../../ui/QalityList';
 
-const User = ({ id }) => {
+const UserPage = ({ id }) => {
   const [user, setUser] = useState();
   const history = useHistory();
 
@@ -44,7 +44,7 @@ const User = ({ id }) => {
   return renderUser();
 };
 
-User.propTypes = {
+UserPage.propTypes = {
   id: PropTypes.string.isRequired
 };
-export default User;
+export default UserPage;

@@ -5,7 +5,7 @@ import {
   Redirect
 } from 'react-router-dom/cjs/react-router-dom.min';
 
-import MainNavBar from './components/MainNavBar';
+import MainNavBar from './components/ui/MainNavBar';
 import Main from './layouts/Main';
 import Login from './layouts/Login';
 import Users from './layouts/Users';
