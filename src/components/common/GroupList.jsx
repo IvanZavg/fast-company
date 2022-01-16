@@ -59,6 +59,7 @@ function renderFromObject({
 }
 
 const GroupList = (props) => {
+  console.log(props.selectedItem);
   if (Array.isArray(props.items)) {
     return renderFromArray(props);
   } else if (typeof props.items === 'object') {
@@ -69,7 +70,8 @@ const GroupList = (props) => {
 
 GroupList.defaultProps = {
   valueProperty: '_id',
-  contentProperty: 'name'
+  contentProperty: 'name',
+  selectedItem: null
 };
 
 GroupList.propTypes = {

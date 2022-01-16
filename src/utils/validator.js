@@ -3,7 +3,14 @@ function validate(fieldData, ruleName, ruleConfig) {
 
   switch (ruleName) {
     case 'isRequired':
-      hasErrors = fieldData.trim() === '';
+      if (Array.isArray(fieldData)) {
+        hasErrors = fieldData.length === 0;
+      } else {
+        hasErrors = fieldData.trim() === '';
+      }
+      break;
+    case 'isChecked':
+      hasErrors = !fieldData;
       break;
     case 'testRegExp':
       hasErrors = ruleConfig.reg.test(fieldData) === false;

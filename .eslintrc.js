@@ -13,6 +13,7 @@ module.exports = {
   },
   plugins: ['react'],
   rules: {
+    'multiline-ternary': ['off'],
     semi: [2, 'always'],
     'space-before-function-paren': [
       'error',

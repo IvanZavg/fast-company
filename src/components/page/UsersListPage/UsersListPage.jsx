@@ -26,7 +26,7 @@ const UsersListPage = () => {
   const [users, setUsers] = useState();
   const [professions, setProfessions] = useState();
   const [currentPage, setCurrentPage] = useState(1);
-  const [selectedProf, setSelectedProf] = useState('');
+  const [selectedProf, setSelectedProf] = useState(null);
   const [sortBy, setSortBy] = useState({ path: 'name', order: 'asc' });
   const [searchValue, setSearchValue] = useState('');
 
@@ -39,7 +39,7 @@ const UsersListPage = () => {
 
   const handleChangeSearchValue = (event) => {
     setSearchValue(event.target.value);
-    setSelectedProf('');
+    setSelectedProf(null);
     console.log(searchValue);
   };
 
@@ -56,7 +56,7 @@ const UsersListPage = () => {
     setSearchValue('');
   };
   const handleClearFilter = () => {
-    setSelectedProf('');
+    setSelectedProf(null);
   };
   const handlePageChange = (pageIdx) => {
     setCurrentPage(pageIdx);

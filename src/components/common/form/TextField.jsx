@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
-const TextField = ({ label, type, name, velue, onChange, error }) => {
+const TextField = ({ label, type, name, value, onChange, error }) => {
   const [showPassword, setShowPassword] = useState(false);
 
   const toggleShowPassword = () => {
@@ -18,7 +18,7 @@ const TextField = ({ label, type, name, velue, onChange, error }) => {
           type={showPassword ? 'text' : type}
           id={name}
           name={name}
-          value={velue}
+          value={value}
           onChange={onChange}
           className={getInputClasses()}
         />
@@ -45,7 +45,7 @@ TextField.propTypes = {
   label: PropTypes.string,
   type: PropTypes.string,
   name: PropTypes.string,
-  velue: PropTypes.string,
+  value: PropTypes.string,
   onChange: PropTypes.func,
   error: PropTypes.string
 };
