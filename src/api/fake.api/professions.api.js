@@ -6,6 +6,7 @@ export const professionsObject = {
   actor: { _id: '67rdca3eeb7f6fgeed471824', name: 'Актер' },
   cook: { _id: '67rdca3eeb7f6fgeed471829', name: 'Повар' }
 };
+
 export const professions = [
   { _id: '67rdca3eeb7f6fgeed471818', name: 'Доктор' },
   { _id: '67rdca3eeb7f6fgeed471820', name: 'Официант' },
@@ -14,12 +15,25 @@ export const professions = [
   { _id: '67rdca3eeb7f6fgeed471824', name: 'Актер' },
   { _id: '67rdca3eeb7f6fgeed471829', name: 'Повар' }
 ];
-const fetchAll = () =>
-  new Promise((resolve) => {
-    window.setTimeout(function () {
-      resolve(professions);
-    }, 2000);
-  });
+
+const loadProfessionsToStorage = async () => {
+  localStorage.setItem('userProfessions', JSON.stringify(professions));
+  return professions;
+};
+
+const fetchAll = () => {
+  const professionsStorage = localStorage.getItem('userProfessions');
+  if (professionsStorage) {
+    return new Promise((resolve) => resolve(JSON.parse(professionsStorage)));
+  } else {
+    return new Promise((resolve) => {
+      window.setTimeout(function () {
+        const professions = loadProfessionsToStorage();
+        resolve(professions);
+      }, 2000);
+    });
+  }
+};
 
 export default {
   fetchAll

@@ -31,12 +31,28 @@ const qualities = {
   }
 };
 
-const fetchAll = () =>
-  new Promise((resolve) => {
-    window.setTimeout(function () {
-      resolve(qualities);
-    }, 2000);
-  });
+const loadQualitiesToStorage = async () => {
+  const processedQualities = Object.keys(qualities).map(
+    (qualityKey) => qualities[qualityKey]
+  );
+  localStorage.setItem('userQualities', JSON.stringify(processedQualities));
+  return processedQualities;
+};
+
+const fetchAll = () => {
+  const qualitiesStorage = localStorage.getItem('userQualities');
+
+  if (qualitiesStorage) {
+    return new Promise((resolve) => resolve(JSON.parse(qualitiesStorage)));
+  } else {
+    return new Promise((resolve) => {
+      window.setTimeout(async () => {
+        const qualities = await loadQualitiesToStorage();
+        resolve(qualities);
+      }, 1000);
+    });
+  }
+};
 
 export default {
   fetchAll

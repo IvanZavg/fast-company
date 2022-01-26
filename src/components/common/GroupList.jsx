@@ -59,7 +59,6 @@ function renderFromObject({
 }
 
 const GroupList = (props) => {
-  console.log(props.selectedItem);
   if (Array.isArray(props.items)) {
     return renderFromArray(props);
   } else if (typeof props.items === 'object') {
