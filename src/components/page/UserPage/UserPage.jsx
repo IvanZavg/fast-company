@@ -1,20 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
-import api from '../../../api';
 
 import UserCard from './UserCard';
 import QualitiesCard from './QualitiesCard';
 import MeetingsCard from './MeetingsCard';
 import CommentsBlock from './ComentsBlock';
+import { useUser } from '../../../hooks/useUsers';
+import { useProfessions } from '../../../hooks/useProfessions';
 
 const UserPage = ({ id }) => {
-  const [user, setUser] = useState();
+  const user = useUser().getUser(id);
+  const profession = useProfessions().getProfession(user.profession);
   const history = useHistory();
-
-  useEffect(() => {
-    api.users.fetchUserById(id).then((data) => setUser(data));
-  }, []);
 
   const handleReplaceToEdit = () => {
     history.push(`/users/${id}/edit`);
@@ -28,7 +26,7 @@ const UserPage = ({ id }) => {
             <div className="col-md-4 mb-3">
               <UserCard
                 name={user.name}
-                profession={user.profession.name}
+                profession={profession.name}
                 rate={user.rate}
                 onEdit={handleReplaceToEdit}
               />

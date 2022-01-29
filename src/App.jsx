@@ -4,11 +4,14 @@ import {
   Switch,
   Redirect
 } from 'react-router-dom/cjs/react-router-dom.min';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import MainNavBar from './components/ui/MainNavBar';
 import Main from './layouts/Main';
 import Login from './layouts/Login';
 import Users from './layouts/Users';
+import { ProfessionsProvider } from './hooks/useProfessions';
 
 const App = () => {
   return (
@@ -16,11 +19,13 @@ const App = () => {
       <MainNavBar />
       <Switch>
         <Route exact path="/" component={Main} />
-        <Route path="/login/:type?" component={Login} />
-        <Route exact path="/users/:userId?" component={Users} />
-        <Route exact path="/users/:userId?/:action?" component={Users} />
+        <ProfessionsProvider>
+          <Route exact path="/login/:type?" component={Login} />
+          <Route exact path="/users/:userId?/:action?" component={Users} />
+        </ProfessionsProvider>
         <Redirect to="/" />
       </Switch>
+      <ToastContainer />
     </>
   );
 };
