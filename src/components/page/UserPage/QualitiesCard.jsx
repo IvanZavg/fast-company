@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import QalityList from '../../ui/QalityList';
 
-const QualitiesCard = ({ qualities }) => {
+const QualitiesCard = ({ qualitiesId }) => {
   return (
     <div className="card mb-3">
       <div className="card-body d-flex flex-column justify-content-center text-center">
@@ -11,7 +11,7 @@ const QualitiesCard = ({ qualities }) => {
           <span>Qualities</span>
         </h5>
         <p className="card-text">
-          <QalityList qualities={qualities} />
+          <QalityList qualitiesId={qualitiesId} />
         </p>
       </div>
     </div>
@@ -19,7 +19,7 @@ const QualitiesCard = ({ qualities }) => {
 };
 
 QualitiesCard.propTypes = {
-  qualities: PropTypes.array
+  qualitiesId: PropTypes.array
 };
 
 export default QualitiesCard;

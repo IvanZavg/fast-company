@@ -8,7 +8,8 @@ import {
   MultiSelectField
 } from '../common/form';
 
-import api from '../../api';
+import { useProfessions } from '../../hooks/useProfessions';
+import { useQuality } from '../../hooks/useQuality';
 
 const validatorConfig = {
   name: {
@@ -41,20 +42,13 @@ const validatorConfig = {
 const EditUserForm = ({ name, email, profession, sex, qualities, onEdit }) => {
   const [data, setData] = useState({ name, email, profession, sex, qualities });
   const [errors, setErrors] = useState({});
-  const [professions, setProfessions] = useState([]);
-  const [qualitiesList, setQualitiesList] = useState([]);
+  const { professions } = useProfessions();
+  const qualitiesList = useQuality().qualities;
   const isEnableSend = Object.keys(errors).length === 0;
 
-  useEffect(() => {
-    api.professions.fetchAll().then((results) => setProfessions(results));
-    api.qualities.fetchAll().then((results) => {
-      results = Object.keys(results).map((key) => ({
-        value: results[key]._id,
-        label: results[key].name
-      }));
-      setQualitiesList(results);
-    });
-  }, []);
+  const formatQualities = () => {
+    return qualitiesList.map((q) => ({ value: q._id, label: q.name }));
+  };
 
   useEffect(() => validate(), [data]);
 
@@ -125,7 +119,7 @@ const EditUserForm = ({ name, email, profession, sex, qualities, onEdit }) => {
       <MultiSelectField
         label="Выберите качества"
         name="qualities"
-        options={qualitiesList}
+        options={formatQualities()}
         onChange={handleChange}
         defaultValue={qualities.map((q) => ({ value: q._id, label: q.name }))}
         error={errors.qualities}

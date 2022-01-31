@@ -15,12 +15,12 @@ export const ProfessionsProvider = ({ children }) => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    toast.error(error);
-    setError(null);
+    getProfessionsList();
   }, []);
 
   useEffect(() => {
-    getProfessionsList();
+    toast.error(error);
+    setError(null);
   }, [error]);
 
   function getProfession(id) {

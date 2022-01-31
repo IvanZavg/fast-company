@@ -8,7 +8,8 @@ import {
   CheckBoxField
 } from '../common/form';
 
-import api from '../../api';
+import { useProfessions } from '../../hooks/useProfessions';
+import { useQuality } from '../../hooks/useQuality';
 
 const validatorConfig = {
   email: {
@@ -63,20 +64,13 @@ const RegisterForm = () => {
     license: false
   });
   const [errors, setErrors] = useState({});
-  const [professions, setProfessions] = useState([]);
-  const [qualities, setQualities] = useState([]);
+  const { professions, isLoading: profLoading } = useProfessions();
+  const { qualities, isLoading: qualitiesLoading } = useQuality();
   const isEnableSend = Object.keys(errors).length === 0;
 
-  useEffect(() => {
-    api.professions.fetchAll().then((results) => setProfessions(results));
-    api.qualities.fetchAll().then((results) => {
-      results = Object.keys(results).map((key) => ({
-        value: results[key]._id,
-        label: results[key].name
-      }));
-      setQualities(results);
-    });
-  }, []);
+  const formatQualities = () => {
+    return qualities.map((q) => ({ value: q._id, label: q.name }));
+  };
 
   useEffect(() => validate(), [data]);
 
@@ -109,67 +103,71 @@ const RegisterForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <TextField
-        label="Email"
-        name="email"
-        value={data.email}
-        onChange={handleChange}
-        error={errors.email}
-      />
-      <TextField
-        label="Password"
-        type="password"
-        name="password"
-        value={data.password}
-        onChange={handleChange}
-        error={errors.password}
-      />
-      <SelectField
-        label="Профессия"
-        name="profession"
-        options={professions}
-        optionValueName="_id"
-        optionTextName="name"
-        selectedValue={data.profession}
-        onChange={handleChange}
-        error={errors.profession}
-      />
-      <RadioField
-        label="Выберите ваш пол:"
-        name="sex"
-        options={[
-          { value: 'male', label: 'Male' },
-          { value: 'female', label: 'Female' }
-        ]}
-        optionValueName="value"
-        optionTextName="label"
-        selectedValue={data.sex}
-        onChange={handleChange}
-      />
-      <MultiSelectField
-        label="Выберите качества"
-        name="qualities"
-        options={qualities}
-        onChange={handleChange}
-        error={errors.qualities}
-      />
-      <CheckBoxField
-        name="license"
-        value={data.license}
-        onChange={handleChange}
-        error={errors.license}
-      >
-        Подтвердить <a href="/"> лицензионное соглашение</a>
-      </CheckBoxField>
-      <button
-        className="btn btn-primary w-100 mx-auto"
-        type="submit"
-        disabled={!isEnableSend}
-      >
-        Submit
-      </button>
-    </form>
+    <>
+      {!profLoading && !qualitiesLoading && (
+        <form onSubmit={handleSubmit}>
+          <TextField
+            label="Email"
+            name="email"
+            value={data.email}
+            onChange={handleChange}
+            error={errors.email}
+          />
+          <TextField
+            label="Password"
+            type="password"
+            name="password"
+            value={data.password}
+            onChange={handleChange}
+            error={errors.password}
+          />
+          <SelectField
+            label="Профессия"
+            name="profession"
+            options={professions}
+            optionValueName="_id"
+            optionTextName="name"
+            selectedValue={data.profession}
+            onChange={handleChange}
+            error={errors.profession}
+          />
+          <RadioField
+            label="Выберите ваш пол:"
+            name="sex"
+            options={[
+              { value: 'male', label: 'Male' },
+              { value: 'female', label: 'Female' }
+            ]}
+            optionValueName="value"
+            optionTextName="label"
+            selectedValue={data.sex}
+            onChange={handleChange}
+          />
+          <MultiSelectField
+            label="Выберите качества"
+            name="qualities"
+            options={formatQualities()}
+            onChange={handleChange}
+            error={errors.qualities}
+          />
+          <CheckBoxField
+            name="license"
+            value={data.license}
+            onChange={handleChange}
+            error={errors.license}
+          >
+            Подтвердить <a href="/"> лицензионное соглашение</a>
+          </CheckBoxField>
+          <button
+            className="btn btn-primary w-100 mx-auto"
+            type="submit"
+            disabled={!isEnableSend}
+          >
+            Submit
+          </button>
+        </form>
+      )}
+    </>
   );
 };
 

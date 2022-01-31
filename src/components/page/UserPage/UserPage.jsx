@@ -12,6 +12,7 @@ import { useProfessions } from '../../../hooks/useProfessions';
 const UserPage = ({ id }) => {
   const user = useUser().getUser(id);
   const profession = useProfessions().getProfession(user.profession);
+  const isProfessionLoading = useProfessions().isLoading;
   const history = useHistory();
 
   const handleReplaceToEdit = () => {
@@ -24,13 +25,15 @@ const UserPage = ({ id }) => {
         <div className="container">
           <div className="row gutters-sm">
             <div className="col-md-4 mb-3">
-              <UserCard
-                name={user.name}
-                profession={profession.name}
-                rate={user.rate}
-                onEdit={handleReplaceToEdit}
-              />
-              <QualitiesCard qualities={user.qualities} />
+              {!isProfessionLoading && (
+                <UserCard
+                  name={user.name}
+                  profession={profession.name}
+                  rate={user.rate}
+                  onEdit={handleReplaceToEdit}
+                />
+              )}
+              <QualitiesCard qualitiesId={user.qualities} />
               <MeetingsCard completedMeetings={user.completedMeetings} />
             </div>
 

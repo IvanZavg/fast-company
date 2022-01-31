@@ -12,6 +12,7 @@ import Main from './layouts/Main';
 import Login from './layouts/Login';
 import Users from './layouts/Users';
 import { ProfessionsProvider } from './hooks/useProfessions';
+import { QualityProvider } from './hooks/useQuality';
 
 const App = () => {
   return (
@@ -20,8 +21,10 @@ const App = () => {
       <Switch>
         <Route exact path="/" component={Main} />
         <ProfessionsProvider>
-          <Route exact path="/login/:type?" component={Login} />
-          <Route exact path="/users/:userId?/:action?" component={Users} />
+          <QualityProvider>
+            <Route exact path="/login/:type?" component={Login} />
+            <Route exact path="/users/:userId?/:action?" component={Users} />
+          </QualityProvider>
         </ProfessionsProvider>
         <Redirect to="/" />
       </Switch>

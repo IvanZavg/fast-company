@@ -7,8 +7,13 @@ import FavoritesBookmark from '../common/FavoritesBookmark';
 import QalityList from './QalityList';
 import Profession from './Profession';
 
-const UsersTable = (props) => {
-  const { onSort, selectedSort } = props;
+const UsersTable = ({
+  onSort,
+  selectedSort,
+  users,
+  onToggleFavorites,
+  onDeleteUser
+}) => {
   const columns = {
     name: {
       path: 'name',
@@ -21,7 +26,7 @@ const UsersTable = (props) => {
       path: null,
       name: 'Качества',
       component: (user) => {
-        return <QalityList qualities={user.qualities} />;
+        return <QalityList qualitiesId={user.qualities} />;
       }
     },
     profession: {
@@ -43,7 +48,7 @@ const UsersTable = (props) => {
         return (
           <FavoritesBookmark
             isFavorite={user.bookmark}
-            onToggleFavorites={() => props.onToggleFavorites(user._id)}
+            onToggleFavorites={() => onToggleFavorites(user._id)}
           />
         );
       }
@@ -55,7 +60,7 @@ const UsersTable = (props) => {
         return (
           <button
             className="btn btn-danger"
-            onClick={() => props.onDeleteUser(user._id)}
+            onClick={() => onDeleteUser(user._id)}
           >
             Delete
           </button>
@@ -63,7 +68,7 @@ const UsersTable = (props) => {
       }
     }
   };
-  return <Table {...{ onSort, selectedSort, columns, data: props.users }} />;
+  return <Table {...{ onSort, selectedSort, columns, data: users }} />;
 };
 
 UsersTable.propTypes = {
