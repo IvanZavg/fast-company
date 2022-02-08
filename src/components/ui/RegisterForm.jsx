@@ -10,6 +10,7 @@ import {
 
 import { useProfessions } from '../../hooks/useProfessions';
 import { useQuality } from '../../hooks/useQuality';
+import { useAuth } from '../../hooks/useAuth';
 
 const validatorConfig = {
   email: {
@@ -66,6 +67,7 @@ const RegisterForm = () => {
   const [errors, setErrors] = useState({});
   const { professions, isLoading: profLoading } = useProfessions();
   const { qualities, isLoading: qualitiesLoading } = useQuality();
+  const { signUp } = useAuth();
   const isEnableSend = Object.keys(errors).length === 0;
 
   const formatQualities = () => {
@@ -99,7 +101,12 @@ const RegisterForm = () => {
     const isValid = validate();
     if (!isValid) return;
 
-    console.log(data);
+    const preparedData = {
+      ...data,
+      qualities: data.qualities.map((q) => q.value)
+    };
+    signUp(preparedData);
+    console.log(preparedData);
   };
 
   return (

@@ -13,22 +13,25 @@ import Login from './layouts/Login';
 import Users from './layouts/Users';
 import { ProfessionsProvider } from './hooks/useProfessions';
 import { QualityProvider } from './hooks/useQuality';
+import AuthProvider from './hooks/useAuth';
 
 const App = () => {
   return (
     <>
-      <MainNavBar />
-      <Switch>
-        <Route exact path="/" component={Main} />
+      <AuthProvider>
+        <MainNavBar />
         <ProfessionsProvider>
           <QualityProvider>
-            <Route exact path="/login/:type?" component={Login} />
-            <Route exact path="/users/:userId?/:action?" component={Users} />
+            <Switch>
+              <Route exact path="/login/:type?" component={Login} />
+              <Route exact path="/users/:userId?/:action?" component={Users} />
+              <Route exact path="/" component={Main} />
+              <Redirect to="/" />
+            </Switch>
           </QualityProvider>
         </ProfessionsProvider>
-        <Redirect to="/" />
-      </Switch>
-      <ToastContainer />
+        <ToastContainer />
+      </AuthProvider>
     </>
   );
 };

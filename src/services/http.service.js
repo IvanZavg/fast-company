@@ -1,11 +1,39 @@
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import config from '../config.json';
+import configFile from '../config.json';
 
-axios.defaults.baseURL = config.apiEndpoint;
+const http = axios.create({
+  baseURL: configFile.apiEndpoint
+});
 
-axios.interceptors.response.use(
-  (res) => res,
+http.interceptors.request.use(
+  function (config) {
+    if (configFile.isFirebase) {
+      const hasEndSlash = /\/$/gm.test(config.url);
+      config.url = hasEndSlash
+        ? config.url.slice(0, -1) + '.json'
+        : config.url + '.json';
+    }
+    return config;
+  },
+  function (error) {
+    return Promise.reject(error);
+  }
+);
+
+function tranformData(data) {
+  // console.log('data beafore transform:', data);
+  return data ? Object.keys(data).map((key) => ({ ...data[key] })) : [];
+}
+
+http.interceptors.response.use(
+  (res) => {
+    // console.log('response', res);
+    if (configFile.isFirebase) {
+      res.data = { content: tranformData(res.data) };
+    }
+    return res;
+  },
   (error) => {
     const isExpectedError =
       error.response &&
@@ -21,10 +49,10 @@ axios.interceptors.response.use(
 );
 
 const httpService = {
-  get: axios.get,
-  post: axios.post,
-  put: axios.put,
-  delete: axios.delete
+  get: http.get,
+  post: http.post,
+  put: http.put,
+  delete: http.delete
 };
 
 export default httpService;
